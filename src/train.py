@@ -16,8 +16,8 @@ def split_dados(X, y, test_size=0.2, random_state=None):
     if random_state is None:
         random_state = int(time.time())
     
-    print("\n📊 Dividindo em treino/teste...")
-    print(f"   Random state: {random_state}")
+    print("\nDividindo em treino/teste...")
+    print(f"Random state: {random_state}")
     
     X_train, X_test, y_train, y_test = train_test_split(
         X, y,
@@ -26,8 +26,8 @@ def split_dados(X, y, test_size=0.2, random_state=None):
         stratify=y
     )
     
-    print(f"✅ Treino: {len(X_train):,} ({len(X_train)/len(X)*100:.1f}%)")
-    print(f"✅ Teste:  {len(X_test):,} ({len(X_test)/len(X)*100:.1f}%)")
+    print(f"Treino: {len(X_train):,} ({len(X_train)/len(X)*100:.1f}%)")
+    print(f"Teste:  {len(X_test):,} ({len(X_test)/len(X)*100:.1f}%)")
     
     return X_train, X_test, y_train, y_test, random_state
 
@@ -35,11 +35,9 @@ def split_dados(X, y, test_size=0.2, random_state=None):
 def balancear_dados(X_train, y_train, sampling_strategy=0.6, random_state=42):
     """
     Aplica SMOTE para balanceamento
-    
-    Configuração ótima: sampling_strategy=0.6 (60% CANCELED, 40% FINISHED)
     """
     
-    print("\n⚖️ Balanceando com SMOTE 60-40...")
+    print("\nBalanceando com SMOTE 60-40...")
     
     print(f"ANTES:  {len(y_train):,} amostras")
     print(f"   CANCELED: {(y_train==0).sum():,} ({(y_train==0).sum()/len(y_train)*100:.2f}%)")
@@ -58,12 +56,12 @@ def balancear_dados(X_train, y_train, sampling_strategy=0.6, random_state=42):
 def treinar_naive_bayes(X_train, y_train):
     """Treina Gaussian Naive Bayes"""
     
-    print("\n🤖 Treinando Gaussian Naive Bayes...")
+    print("\nTreinando Gaussian Naive Bayes...")
     
     modelo = GaussianNB()
     modelo.fit(X_train, y_train)
     
-    print(f"✅ Modelo treinado com {len(y_train):,} amostras")
+    print(f"Modelo treinado com {len(y_train):,} amostras")
     
     return modelo
 
@@ -71,7 +69,7 @@ def treinar_naive_bayes(X_train, y_train):
 def cross_validation(X_train, y_train, n_splits=6, random_state=42):
     """Executa cross-validation com SMOTE em cada fold"""
     
-    print(f"\n🔄 Cross-Validation ({n_splits}-Fold Stratified)...")
+    print(f"\nCross-Validation ({n_splits}-Fold Stratified)...")
     
     modelo = GaussianNB()
     cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=random_state)
@@ -97,8 +95,8 @@ def pipeline_completo(X, y, random_state=None):
     Pipeline completo de treinamento com SMOTE 60-40
     
     Configuração Final:
-    - SMOTE 60-40 (melhor F1-Score: 71.53%)
-    - 5-Fold Stratified CV
+    - SMOTE 60
+    - 6-Fold Stratified CV
     - Random state dinâmico (timestamp)
     
     Returns:
@@ -106,9 +104,9 @@ def pipeline_completo(X, y, random_state=None):
     """
     
     print("=" * 80)
-    print("🚀 PIPELINE DE TREINAMENTO - CONFIGURAÇÃO OTIMIZADA")
+    print("PIPELINE DE TREINAMENTO - CONFIGURAÇÃO OTIMIZADA")
     print("=" * 80)
-    print("   Técnica: SMOTE 60-40")
+    print("   Técnica: SMOTE")
     print("   Algoritmo: Gaussian Naive Bayes")
     print("   Features: 21")
     print("=" * 80)
@@ -126,7 +124,7 @@ def pipeline_completo(X, y, random_state=None):
     modelo = treinar_naive_bayes(X_train_bal, y_train_bal)
     
     print("\n" + "=" * 80)
-    print("✅ TREINAMENTO CONCLUÍDO!")
+    print("TREINAMENTO CONCLUÍDO")
     print("=" * 80)
     
     return modelo, X_train, X_test, y_train, y_test

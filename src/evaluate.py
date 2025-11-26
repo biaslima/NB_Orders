@@ -5,13 +5,14 @@ Funções de avaliação
 from sklearn.metrics import (classification_report, confusion_matrix,
                              accuracy_score, precision_score, recall_score,
                              f1_score, roc_auc_score)
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def avaliar_modelo(modelo, X_test, y_test):
     """Avalia o modelo no conjunto de teste"""
     
     print("=" * 80)
-    print("📊 AVALIAÇÃO DO MODELO")
+    print("AVALIAÇÃO DO MODELO")
     print("=" * 80)
     
     # Predições
@@ -22,21 +23,30 @@ def avaliar_modelo(modelo, X_test, y_test):
     acc = accuracy_score(y_test, y_pred)
     auc = roc_auc_score(y_test, y_pred_proba)
     
-    print(f"\n✅ Acurácia: {acc:.4f} ({acc*100:.2f}%)")
-    print(f"✅ AUC-ROC:  {auc:.4f} ({auc*100:.2f}%)")
+    print(f"\nAcurácia: {acc:.4f} ({acc*100:.2f}%)")
+    print(f"AUC-ROC:  {auc:.4f} ({auc*100:.2f}%)")
     
     # Relatório de classificação
-    print("\n📋 RELATÓRIO DE CLASSIFICAÇÃO:")
+    print("\nRELATÓRIO DE CLASSIFICAÇÃO:")
     print("=" * 80)
     print(classification_report(y_test, y_pred,
                                target_names=['CANCELED', 'FINISHED'],
                                digits=4))
     
     # Matriz de confusão
-    print("🎯 MATRIZ DE CONFUSÃO:")
+    print("MATRIZ DE CONFUSÃO:")
     print("=" * 80)
     
     cm = confusion_matrix(y_test, y_pred)
+
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False,
+                xticklabels=['CANCELED (Predito)', 'FINISHED (Predito)'],
+                yticklabels=['CANCELED (Real)', 'FINISHED (Real)'])
+    plt.xlabel('Predito pelo Modelo', fontsize=12)
+    plt.ylabel('Realidade (Gabarito)', fontsize=12)
+    plt.title('Matriz de Confusão - Modelo Naive Bayes', fontsize=14, fontweight='bold')
+    plt.show()
     
     print(f"\n                    Predito")
     print(f"                CANCELED  FINISHED   Total")
@@ -49,7 +59,7 @@ def avaliar_modelo(modelo, X_test, y_test):
     r_cancel = recall_score(y_test, y_pred, pos_label=0)
     f1_cancel = f1_score(y_test, y_pred, pos_label=0)
     
-    print("\n🎯 MÉTRICAS PARA CANCELED (classe de interesse):")
+    print("\nMÉTRICAS PARA CANCELED:")
     print("=" * 80)
     print(f"   Precisão: {p_cancel:.4f} ({p_cancel*100:.2f}%)")
     print(f"   Recall:   {r_cancel:.4f} ({r_cancel*100:.2f}%)")

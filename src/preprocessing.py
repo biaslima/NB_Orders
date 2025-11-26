@@ -85,7 +85,7 @@ def criar_features(df):
     print("\nCriando features...")
     
     # Dia da semana
-    df['day_of_week'] = pd.to_datetime(df['order_moment_created']).dt.dayofweek
+    df['day_of_week'] = pd.to_datetime(df['order_moment_created'], format='%m/%d/%Y %I:%M:%S %p').dt.dayofweek
     df['is_weekend'] = df['day_of_week'].isin([5, 6]).astype(int)
     
     # Período do dia
@@ -125,8 +125,8 @@ def selecionar_features(df):
         'order_amount',
         'order_delivery_fee',
         'order_created_hour',
-        'delivery_distance_meters',
         'store_plan_price',
+        'delivery_distance_meters',
         'day_of_week',
         'store_cancel_rate',
         
@@ -155,7 +155,7 @@ def selecionar_features(df):
 def tratar_nulos(df):
     """Trata valores nulos"""
     
-    print("\n🔧 Tratando nulos...")
+    print("\nTratando nulos...")
     
     # Numéricas: mediana
     for col in ['delivery_distance_meters', 'store_plan_price']:
@@ -171,7 +171,7 @@ def tratar_nulos(df):
             df[col] = df[col].fillna(moda)
             print(f"   {col}: preenchido com {moda}")
     
-    print(f"✅ Nulos restantes: {df.isnull().sum().sum()}")
+    print(f"Nulos restantes: {df.isnull().sum().sum()}")
     
     return df
 
@@ -179,7 +179,7 @@ def tratar_nulos(df):
 def tratar_outliers(df):
     """Trata outliers com capping"""
     
-    print("\n📊 Tratando outliers...")
+    print("\nTratando outliers...")
     
     colunas_outliers = {
         'order_amount': 246.15,
@@ -199,7 +199,7 @@ def tratar_outliers(df):
 def codificar_categoricas(df):
     """Codifica variáveis categóricas"""
     
-    print("\n🔤 Codificando categóricas...")
+    print("\nCodificando categóricas...")
     
     # Separar target antes
     target = df['order_status']
@@ -228,7 +228,7 @@ def codificar_categoricas(df):
     # Target: FINISHED=1, CANCELED=0
     y = (target == 'FINISHED').astype(int)
     
-    print(f"\n✅ Dataset final: {df.shape}")
+    print(f"\nDataset final: {df.shape}")
     
     return df, y
 
@@ -242,7 +242,7 @@ def preprocessar_tudo(data_path='data/'):
     """
     
     print("=" * 80)
-    print("🔧 PIPELINE DE PRÉ-PROCESSAMENTO")
+    print("PIPELINE DE PRÉ-PROCESSAMENTO")
     print("=" * 80)
     
     # 1. Carregar
@@ -270,7 +270,7 @@ def preprocessar_tudo(data_path='data/'):
     X, y = codificar_categoricas(df)
     
     print("\n" + "=" * 80)
-    print("✅ PRÉ-PROCESSAMENTO CONCLUÍDO!")
+    print("PRÉ-PROCESSAMENTO CONCLUÍDO!")
     print("=" * 80)
     print(f"Features: {X.shape[1]}")
     print(f"Amostras: {len(X):,}")

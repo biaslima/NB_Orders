@@ -10,10 +10,9 @@ def main():
     # Random state dinâmico
     random_state = int(time.time())
     
-    print("\n" + "🎯" * 40)
-    print("      PREVISÃO DE CANCELAMENTO - NAIVE BAYES")
-    print("      CONFIGURAÇÃO OTIMIZADA: SMOTE 60-40")
-    print("🎯" * 40)
+    print("\n" + "=" * 40)
+    print("PREVISÃO DE CANCELAMENTO - NAIVE BAYES")
+    print("=" * 40)
     print(f"\nRandom state: {random_state}\n")
     
     # 1. Pré-processamento
@@ -27,10 +26,10 @@ def main():
     
     # Resultado final
     print("\n" + "=" * 80)
-    print("🏆 RESULTADO FINAL - SMOTE 60-40")
+    print("RESULTADO FINAL - SMOTE 60-40")
     print("=" * 80)
     print(f"""
-    📊 MÉTRICAS GERAIS:
+       MÉTRICAS GERAIS:
        Acurácia:         {metricas['accuracy']*100:.2f}%
        AUC-ROC:          {metricas['auc']*100:.2f}%
     
@@ -43,9 +42,9 @@ def main():
     print("=" * 80)
     
     # Salvar informações importantes
-    print("\n💾 INFORMAÇÕES PARA REPRODUÇÃO:")
+    print("\nINFORMAÇÕES PARA REPRODUÇÃO:")
     print(f"   Random state usado: {random_state}")
-    print(f"   Técnica: SMOTE 60-40")
+    print(f"   Técnica: SMOTE ")
     print(f"   Features: 21")
     print(f"   Split: 80/20 stratified")
     print("=" * 80)
