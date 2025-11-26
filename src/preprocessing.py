@@ -20,7 +20,7 @@ def carregar_dados(data_path='data/'):
     deliveries = pd.read_csv(f"{data_path}deliveries.csv", encoding="latin-1")
     drivers = pd.read_csv(f"{data_path}drivers.csv", encoding="latin-1")
     
-    print(f"✅ {len(orders):,} pedidos carregados")
+    print(f"{len(orders):,} pedidos carregados")
     
     return orders, stores, payments, channels, hubs, deliveries, drivers
 
@@ -28,7 +28,7 @@ def carregar_dados(data_path='data/'):
 def fazer_merge(orders, stores, payments, channels, hubs, deliveries, drivers):
     """Combina todos os datasets"""
     
-    print("\n🔗 Fazendo merge dos datasets...")
+    print("\nFazendo merge dos datasets...")
     
     # Merge principal
     df = orders.merge(stores, on='store_id', how='left')
@@ -49,6 +49,7 @@ def fazer_merge(orders, stores, payments, channels, hubs, deliveries, drivers):
     
     # Deliveries
     deliveries_clean = deliveries[['delivery_order_id', 'driver_id', 'delivery_distance_meters']].copy()
+    deliveries_clean = deliveries_clean.drop_duplicates(subset=['delivery_order_id'], keep='last')
     deliveries_clean.rename(columns={'delivery_order_id': 'order_id'}, inplace=True)
     df = df.merge(deliveries_clean, on='order_id', how='left')
     
@@ -58,7 +59,7 @@ def fazer_merge(orders, stores, payments, channels, hubs, deliveries, drivers):
     # Flag has_driver
     df['has_driver'] = df['driver_id'].notna().astype(int)
     
-    print(f"✅ Dataset merged: {df.shape}")
+    print(f"Dataset merged: {df.shape}")
     
     return df
 
@@ -66,7 +67,7 @@ def fazer_merge(orders, stores, payments, channels, hubs, deliveries, drivers):
 def limpar_dados(df):
     """Remove data leakage e filtra status"""
     
-    print("\n🧹 Limpando dados...")
+    print("\nLimpando dados...")
     
     # Filtrar apenas CANCELED e FINISHED
     df_clean = df[df['order_status'].isin(['CANCELED', 'FINISHED'])].copy()
@@ -81,7 +82,7 @@ def limpar_dados(df):
 def criar_features(df):
     """Cria features engenheiradas"""
     
-    print("\n⚙️ Criando features...")
+    print("\nCriando features...")
     
     # Dia da semana
     df['day_of_week'] = pd.to_datetime(df['order_moment_created']).dt.dayofweek
@@ -106,7 +107,7 @@ def criar_features(df):
     ).to_dict()
     df['store_cancel_rate'] = df['store_name'].map(store_cancel_rate)
     
-    print("✅ Features criadas: day_of_week, is_weekend, period, store_cancel_rate")
+    print("Features criadas: day_of_week, is_weekend, period, store_cancel_rate")
     
     return df
 
@@ -114,7 +115,7 @@ def criar_features(df):
 def selecionar_features(df):
     """Seleciona apenas features válidas (sem data leakage)"""
     
-    print("\n📋 Selecionando features...")
+    print("\nSelecionando features...")
     
     features_validas = [
         # Target
@@ -146,7 +147,7 @@ def selecionar_features(df):
     
     df_final = df[features_validas].copy()
     
-    print(f"✅ {len(features_validas)-1} features selecionadas")
+    print(f"{len(features_validas)-1} features selecionadas")
     
     return df_final
 

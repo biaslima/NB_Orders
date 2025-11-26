@@ -34,15 +34,11 @@ def main():
        Acurácia:         {metricas['accuracy']*100:.2f}%
        AUC-ROC:          {metricas['auc']*100:.2f}%
     
-    🎯 MÉTRICAS PARA CANCELED (classe de interesse):
+       MÉTRICAS PARA CANCELED (classe de interesse):
        Precisão:         {metricas['precision_cancel']*100:.2f}%
        Recall:           {metricas['recall_cancel']*100:.2f}%
        F1-Score:         {metricas['f1_cancel']*100:.2f}%
-    
-    📈 BENCHMARK:
-       F1-Score esperado: ~71.53%
-       Recall esperado:   ~90.14%
-       Precisão esperada: ~59.29%
+
     """)
     print("=" * 80)
     
